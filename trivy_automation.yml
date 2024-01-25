@@ -40,7 +40,6 @@
       register: trivy_output
 
     - name: Run Trivy scan on Docker images
-    # shell: trivy image -f table -o /tmp/trivy_output/{{ item }} {{ item }} 
       shell: trivy image {{ item }} > /tmp/trivy_output/{{ item }}.txt
       loop: "{{ docker_images.stdout_lines }}"
       register: trivy_docker_output
