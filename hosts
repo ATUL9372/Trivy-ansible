@@ -1,13 +1,14 @@
 [test]
 
-192.168.1.xx
-#192.168.1.xx
-#192.168.1.xx
-
+13.xx.xx.xx
 
 [test:vars]
 ansible_connection=ssh
-ansible_ssh_user=atul
-#ansible_ssh_pass=
+ansible_ssh_user=ENTER-USER-NAME
+#ansible_ssh_pass=ENTER-PASSWORD
+
 #ansible_ssh_common_args='-o StrictHostKeyChecking=no'
-ansible_ssh_common_args='-o IdentitiesOnly=yes'
+#ansible_ssh_common_args='-o IdentitiesOnly=yes'
+
+## optional
+#ansible_ssh_private_key_file=ENTER-YOUR-FULL-PATH-SSH-PRIVATE-KEY

@@ -18,54 +18,12 @@
       get_url:
         url: https://github.com/aquasecurity/trivy/releases/download/v0.18.3/trivy_0.18.3_Linux-64bit.deb
         dest: ~/trivy_0.18.3_Linux-64bit.deb
-    #  when: (ansible_distribution == 'Ubuntu' or ansible_distribution == 'Kali') and ansible_os_family == 'Debian'
       when: ansible_os_family == 'Debian'
-      ignore_errors: yes
   
     - name: Install Trivy .deb package
       apt:
         deb: ~/trivy_0.18.3_Linux-64bit.deb
-    #  when: (ansible_distribution == 'Ubuntu' or ansible_distribution == 'Kali') and ansible_os_family == 'Debian'
       when: ansible_os_family == 'Debian'
-      ignore_errors: yes
-
-    # - name: Install 
-    #   apt: name={{ item }} state=latest
-    #   with_items:
-    #     - wget
-    #     - apt-transport-https
-    #     - gnupg
-    #     - lsb-release
-    #   when: ansible_distribution in ['Ubuntu', 'Debian', 'Kali']
-
-    # - name: Add Trivy repository key
-    #   apt_key:
-    #     url: https://aquasecurity.github.io/trivy-repo/deb/public.key
-    #     state: present
-    #   when: ansible_distribution in ['Ubuntu', 'Debian', 'Kali']
-
-    # - name: Add Trivy repository
-    #   apt_repository:
-    #     repo: 'deb https://aquasecurity.github.io/trivy-repo/deb {{ ansible_lsb.codename }} main'
-    #     state: present
-    #     filename: trivy     
-    #   when: ansible_distribution in ['Ubuntu', 'Debian', 'Kali']
-
-    # - name: Update the server
-    #   apt:
-    #     update_cache: yes
-    #   when: ansible_distribution in ['Ubuntu', 'Debian', 'Kali']
-
-    - name: Install Trivy on CentOS/RHEL
-      shell: rpm -ivh https://github.com/aquasecurity/trivy/releases/download/v0.18.3/trivy_0.18.3_Linux-64bit.rpm
-      ignore_errors: true
-      register: check_trivy_installed
-      when: (ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat') and ansible_os_family == 'RedHat'
-
-    - name: check_trivy_installed 
-      debug: 
-        msg: Check trivy is installed on CentOS/RHEL {{ check_trivy_installed.stderr_lines }}
-      ignore_errors: yes
 
     - name: Find Docker images on host
       shell: "docker images | awk 'NR!=1 {print $1,$2}' | cut -d' ' -f1,2 --output-delimiter=':'"
@@ -82,21 +40,13 @@
       register: trivy_output
 
     - name: Run Trivy scan on Docker images
-      command: trivy image {{ item }} -o /tmp/trivy_output/{{ item }}
-    #  command: trivy image {{ item.split(':')[0] }} -o /tmp/trivy_output/{{ item }}
+      shell: trivy image {{ item }} > /tmp/trivy_output/{{ item }}.txt
       loop: "{{ docker_images.stdout_lines }}"
       register: trivy_docker_output
-      ignore_errors: true
-      when: result.rc != 0
-
     
-    # - name: show the trivy docker images output
-    #   debug: 
-    #     msg: showing dokcer images output {{ trivy_docker_output }}
-
     - name: fetch the trivy output files from remote to local
       fetch:
-        src: "/tmp/trivy_output/{{ item }}"
+        src: "/tmp/trivy_output/{{ item }}.txt"
         dest: "trivy-output-{{ inventory_hostname }}/{{ item | basename }}"
         flat: yes
       loop: "{{ docker_images.stdout_lines }}"
