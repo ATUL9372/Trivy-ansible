@@ -8,38 +8,38 @@ This repository provides a solution for automating the vulnerability scanning of
 
 2. Install [vscode (optional)](https://code.visualstudio.com/download)
    
-3. ## Install python3 python3-pip
+3. Install python3 python3-pip
 
-sudo apt install python3 python3-pip
+         sudo apt install python3 python3-pip
 
 4. Install sshpass
-'''
-sudo apt install sshpass
-'''
+
+         sudo apt install sshpass
+
 
 5. Modify/Add host IPs to `hosts` and configure the variables. Eg.
-'''
-[test]
-192.168.xx.xx
-13.57.xx.xx
 
-[test:vars]
+         [test]
+         192.168.xx.xx
+         13.57.xx.xx
+         
+         [test:vars]
+         
+         ansible_connection=ssh
+         ansible_ssh_user=ENTER-USER-NAME
+         ansible_ssh_pass=ENTER-PASSWORD
 
-ansible_connection=ssh
-ansible_ssh_user=ENTER-USER-NAME
-ansible_ssh_pass=ENTER-PASSWORD
-'''
 
 6. Run ansible playbook
 
-'''
-ansible-playbook -i hosts trivy_automation.yml 
-'''
+
+         ansible-playbook -i hosts trivy_automation.yml 
+
 
 7. Run ansible playbook with sudo password use -k and -K Eg.
 
-'''
-ansible-playbook -i hosts trivy_automation.yml -k
+         
+         ansible-playbook -i hosts trivy_automation.yml -k
+         
+         ansible-playbook -i hosts trivy_automation.yml -K
 
-ansible-playbook -i hosts trivy_automation.yml -K
-'''
