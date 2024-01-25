@@ -8,10 +8,10 @@ This repository provides a solution for automating the vulnerability scanning of
 
 2. Install [vscode (optional)](https://code.visualstudio.com/download)
    
-3. Install python3 python3-pip
-'''
+3. ## Install python3 python3-pip
+
 sudo apt install python3 python3-pip
-'''
+
 4. Install sshpass
 '''
 sudo apt install sshpass
