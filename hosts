@@ -5,8 +5,9 @@
 [test:vars]
 ansible_connection=ssh
 ansible_ssh_user=ENTER-USER-NAME
-#ansible_ssh_pass=ENTER-PASSWORD
+ansible_become_password=ENTER-PASSWORD
 
+#ansible_ssh_pass=ENTER-PASSWORD
 #ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 #ansible_ssh_common_args='-o IdentitiesOnly=yes'
 
